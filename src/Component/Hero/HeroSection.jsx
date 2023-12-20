@@ -14,8 +14,8 @@ const HeroSection = () => {
               updates with your team.
             </h1>
             <div>
-              <button className="bg-darkOne px-12 py-4 text-sm md:text-xl lg:text-2xl font-lora font-bold tracking-wide rounded-lg border-2 border-darkThree duration-200 hover:bg-white hover:scale-105 hover:text-darkThree">
-                Explore Surveys
+              <button className="bg-darkOne px-12 py-4 text-sm md:text-xl lg:text-2xl font-lora font-bold tracking-wide rounded-lg border-2 border-lightOne hover:border-white duration-200 hover:bg-white hover:scale-105 hover:text-darkThree">
+                let&apos;s Explore
               </button>
             </div>
           </div>
