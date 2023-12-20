@@ -9,8 +9,8 @@ const FooterSection = () => {
             <img width={200} className="rounded-full" src={FooterLogo} alt="" />
           </div>
           <p className="font-lora font-semibold py-4 text-xl md:text-2xl lg:text-3xl tracking-widest">
-            Survey website <br />
-            Providing reliable tech since 1992
+            Task management <br />
+            Providing reliable tech since 2023
           </p>
           <p className="font-lora font-semibold py-4 text-sm md:text-xl lg:text-2xl tracking-widest">
             Copyright © 2023 - All right reserved
