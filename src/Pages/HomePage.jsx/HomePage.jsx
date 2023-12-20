@@ -1,4 +1,5 @@
 import ClientSection from '../../Component/Client/ClientSection';
+import FaqSection from '../../Component/Faq/FaqSection';
 import HeroSection from '../../Component/Hero/HeroSection';
 
 const HomePage = () => {
@@ -6,6 +7,7 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <ClientSection />
+      <FaqSection />
     </div>
   );
 };
