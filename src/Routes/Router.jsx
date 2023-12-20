@@ -4,6 +4,7 @@ import ErrorPage from '../Pages/ErrorPage/ErrorPage';
 import HomePage from '../Pages/HomePage.jsx/HomePage';
 import ContactPage from '../Pages/ContactPage/ContactPage';
 import AboutPage from '../Pages/AboutPage/AboutPage';
+import FeaturedPage from '../Pages/Feature/FeaturedPage';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: '/contact', element: <ContactPage /> },
       { path: '/about', element: <AboutPage /> },
+      { path: '/feature', element: <FeaturedPage /> },
     ],
   },
 ]);
