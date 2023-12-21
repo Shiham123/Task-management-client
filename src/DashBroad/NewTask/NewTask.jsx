@@ -1,5 +1,5 @@
 const NewTask = () => {
-  return <div></div>;
+  return <div>this is new task</div>;
 };
 
 export default NewTask;
