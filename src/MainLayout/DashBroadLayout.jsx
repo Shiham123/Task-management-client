@@ -9,7 +9,7 @@ const DashBroadLayout = () => {
   return (
     <div>
       <div className="w-64 min-h-screen bg-lightOne">
-        <div className="px-8 my-12">
+        <div className="px-8 py-12">
           <h1 className="font-lora font-[900] text-[23px] text-darkOne uppercase">
             {loginUserName}
           </h1>
