@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       </PrivateRoutes>
     ),
     children: [
-      { index: true, element: <NewTask /> },
+      { path: 'newTask', element: <NewTask /> },
       { path: 'editTask', element: <EditTask /> },
     ],
   },
