@@ -31,6 +31,7 @@ const SectionProgress = () => {
     },
   });
 
+  // TODO: I have to add here useEffect and retch when i am going to deploy
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
   //     refetch();
@@ -99,6 +100,7 @@ const TaskLists = () => {
     },
   });
 
+  // TODO: I have to add here useEffect and retch when i am going to deploy
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
   //     refetch();
