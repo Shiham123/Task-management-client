@@ -27,6 +27,7 @@ const AddTaskForm = (props) => {
       deadline,
       priority,
       loggedInUserEmail,
+      status: 'created',
     };
 
     publicApi
