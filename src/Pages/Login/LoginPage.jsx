@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import SectionTitle from '../../SubComponent/SectionTitle';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import useAppContext from '../../Hooks/useAppContext';
 import swal from 'sweetalert';
@@ -13,17 +13,28 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const formRef = useRef(null);
-
-  const { loginUserWithEmail } = useAppContext();
+  const { loginUserWithEmail, googleLogin } = useAppContext();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || '/';
 
   const onSubmit = (data) => {
     const { email, password } = data;
-    console.log(data);
     loginUserWithEmail(email, password)
       .then((result) => {
         console.log(result);
         formRef.current.reset();
         swal('login successfully', 'you logged in successfully', 'success');
+        navigate(from, { replace: true });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        console.log(result);
+        navigate('/');
       })
       .catch((error) => console.log(error));
   };
@@ -93,7 +104,10 @@ const LoginPage = () => {
                 <span className="font-semibold uppercase">Sign Up</span>
               </Link>
             </p>
-            <div className="w-full bg-colorFive flex justify-center items-center p-4 rounded-lg cursor-pointer hover:bg-transparent  border-2 border-colorFive duration-300 gap-4">
+            <div
+              onClick={handleGoogleLogin}
+              className="w-full bg-colorFive flex justify-center items-center p-4 rounded-lg cursor-pointer hover:bg-transparent  border-2 border-colorFive duration-300 gap-4"
+            >
               <AiOutlineGoogle size={30} /> <span>Login with google</span>
             </div>
           </div>

@@ -7,6 +7,10 @@ import AboutPage from '../Pages/AboutPage/AboutPage';
 import FeaturedPage from '../Pages/Feature/FeaturedPage';
 import LoginPage from '../Pages/Login/LoginPage';
 import RegisterPage from '../Pages/Register/RegisterPage';
+import DrawerLayout from '../MainLayout/DrawerLayout';
+import NewTask from '../DashBroad/NewTask/NewTask';
+import EditTask from '../DashBroad/EditTask/EditTask';
+import PrivateRoutes from './PrivateRoutes';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +24,18 @@ const router = createBrowserRouter([
       { path: '/feature', element: <FeaturedPage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
+    ],
+  },
+  {
+    path: '/dashBroad',
+    element: (
+      <PrivateRoutes>
+        <DrawerLayout />
+      </PrivateRoutes>
+    ),
+    children: [
+      { index: true, element: <NewTask /> },
+      { path: 'editTask', element: <EditTask /> },
     ],
   },
 ]);
