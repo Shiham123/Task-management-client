@@ -1,11 +1,61 @@
 import PropTypes from 'prop-types';
 
-import { createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from 'firebase/auth';
+import globalAuth from '../Firebase/firebase.config';
 
 const AppContext = createContext(null);
 
 const AppProvider = ({ children }) => {
-  const info = { name: 'shiham' };
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  const createUserWithEmail = (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(globalAuth, email, password);
+  };
+
+  const loginUserWithEmail = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(globalAuth, email, password);
+  };
+
+  const profileUpdate = (name, photoUrl) => {
+    return updateProfile(globalAuth.currentUser, {
+      displayName: name,
+      photoURL: photoUrl,
+    });
+  };
+
+  const logOut = () => {
+    setLoading(true);
+    return signOut(globalAuth);
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(globalAuth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const info = {
+    createUserWithEmail,
+    loginUserWithEmail,
+    user,
+    loading,
+    profileUpdate,
+    logOut,
+  };
+
   return <AppContext.Provider value={info}>{children}</AppContext.Provider>;
 };
 

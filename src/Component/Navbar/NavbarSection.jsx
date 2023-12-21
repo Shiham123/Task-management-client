@@ -1,8 +1,27 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Logo from '../../assets/calendar-with-checklist-date-schedule-3d-icon-removebg-preview.png';
 import { FaBars } from 'react-icons/fa';
+import useAppContext from '../../Hooks/useAppContext';
+import Swal from 'sweetalert2';
 
 const NavbarSection = () => {
+  const authentication = useAppContext();
+  const { user, logOut } = authentication;
+  const username = user?.displayName;
+  const photoUrl = user?.photoURL;
+
+  const handleSignOut = () => {
+    logOut()
+      .then((result) => {
+        console.log(result);
+        Swal.fire({
+          icon: 'success',
+          text: 'Sign Out Successfully',
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <div className="navbar bg-lightOne">
       <div className="navbar-start">
@@ -108,7 +127,32 @@ const NavbarSection = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <div className="flex gap-8">
+            <div className="flex justify-center items-center gap-4">
+              <h1 className="font-lora text-xl">{username}</h1>
+              <img
+                src={photoUrl}
+                width={40}
+                height={40}
+                className="border-darkOne border-2 rounded-full"
+                alt=""
+              />
+            </div>
+            <button
+              onClick={handleSignOut}
+              className="bg-darkOne text-lightThree px-8 py-2 text-xl font-lora rounded-lg hover:bg-transparent hover:text-darkOne border-2 border-darkOne"
+            >
+              Sign Out
+            </button>
+          </div>
+        ) : (
+          <Link to={'/login'}>
+            <button className="bg-darkOne text-lightThree px-8 py-2 text-xl font-lora rounded-lg hover:bg-transparent hover:text-darkOne border-2 border-darkOne">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
