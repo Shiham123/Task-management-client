@@ -1,8 +1,13 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import useAppContext from '../../Hooks/useAppContext';
+import usePublicApi from '../../Hooks/usePublicApi';
+import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
 
-const AddTaskForm = () => {
+const AddTaskForm = (props) => {
+  const { closeModal } = props;
+
   const {
     register,
     handleSubmit,
@@ -12,12 +17,32 @@ const AddTaskForm = () => {
   const authentication = useAppContext();
   const { user } = authentication;
   const loggedInUserEmail = user?.email;
+  const publicApi = usePublicApi();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const { title, description, deadline, priority } = data;
+    const formData = {
+      title,
+      description,
+      deadline,
+      priority,
+      loggedInUserEmail,
+    };
+
+    publicApi
+      .post('/tasks', formData)
+      .then((response) => {
+        console.log(response);
+        Swal.fire('Good job!', 'task added', 'success');
+        formRef.current.reset();
+        closeModal();
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         {/* Title */}
         <div className="flex flex-col gap-8 my-8">
           <label
@@ -30,7 +55,13 @@ const AddTaskForm = () => {
             type="text"
             placeholder="title"
             className="font-roboto text-2xl p-4 outline-none border-2 border-darkOne rounded-lg"
+            {...register('title', { required: true })}
           />
+          {errors.title && (
+            <span className="text-red-500 font-poppins uppercase text-xl">
+              title required
+            </span>
+          )}
         </div>
 
         {/* description */}
@@ -45,7 +76,13 @@ const AddTaskForm = () => {
             type="text"
             placeholder="description"
             className="font-roboto text-2xl p-4 outline-none border-2 border-darkOne rounded-lg"
+            {...register('description', { required: true })}
           />
+          {errors.description && (
+            <span className="text-red-500 font-poppins uppercase text-xl">
+              Description required
+            </span>
+          )}
         </div>
 
         <div className="flex flex-col gap-8 my-8">
@@ -60,7 +97,13 @@ const AddTaskForm = () => {
             name=""
             id=""
             className="font-lora p-2 rounded-lg text-xl"
+            {...register('deadline', { required: true })}
           />
+          {errors.deadline && (
+            <span className="text-red-500 font-poppins uppercase text-xl">
+              Deadline required
+            </span>
+          )}
         </div>
 
         {/* Priority */}
@@ -75,6 +118,7 @@ const AddTaskForm = () => {
             name=""
             id=""
             className="font-lora text-xl outline-none border-2 border-darkOne rounded-lg p-2"
+            {...register('priority', { required: true })}
           >
             <option
               value="low"
@@ -95,10 +139,26 @@ const AddTaskForm = () => {
               High Priority
             </option>
           </select>
+          {errors.priority && (
+            <span className="text-red-500 font-poppins uppercase text-xl">
+              priority required
+            </span>
+          )}
         </div>
+
+        <button
+          type="submit"
+          className="bg-darkOne px-12 py-4 text-lightOne text-sm font-lora font-bold tracking-wide rounded-lg border-2 border-lightOne hover:border-darkOne duration-200 hover:bg-transparent hover:scale-105 hover:text-darkThree capitalize"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
+};
+
+AddTaskForm.propTypes = {
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default AddTaskForm;

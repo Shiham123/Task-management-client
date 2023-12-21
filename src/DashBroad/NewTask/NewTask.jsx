@@ -2,6 +2,9 @@ import SectionTitle from '../../SubComponent/SectionTitle';
 import AddTaskForm from './AddTaskForm';
 
 const NewTask = () => {
+  const closeModal = () => {
+    document.getElementById('my_modal_1').close();
+  };
   return (
     <div>
       <SectionTitle
@@ -20,7 +23,7 @@ const NewTask = () => {
           <div className="modal-box bg-lightOne">
             {/* Here are all added */}
             <div>
-              <AddTaskForm />
+              <AddTaskForm closeModal={closeModal} />
             </div>
             <div className="modal-action">
               <form method="dialog">
