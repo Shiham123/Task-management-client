@@ -2,10 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import usePublicApi from '../../Hooks/usePublicApi';
 import { useDrag, useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 
 const SectionProgress = () => {
-  const [progressData, setProgressData] = useState([]);
   const publicApi = usePublicApi();
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -24,19 +22,25 @@ const SectionProgress = () => {
       .catch((error) => console.log(error));
   };
 
-  useEffect(() => {
-    publicApi
-      .get('/ongoing')
-      .then((response) => {
-        console.log(response);
-        setProgressData(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, [publicApi]);
+  const { data: ongoingData = [] } = useQuery({
+    queryKey: ['progress'],
+    queryFn: async () => {
+      const response = await publicApi.get('/ongoing');
+      console.log(response);
+      return response.data;
+    },
+  });
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     refetch();
+  //   }, 500);
+  //   return () => clearInterval(intervalId);
+  // }, [refetch]);
 
   return (
     <div ref={drop} className={`min-h-screen ${isOver ? 'bg-green-200' : ''}`}>
-      {progressData.map((item, index) => {
+      {ongoingData.map((item, index) => {
         const { title, description, priority } = item;
         return (
           <div
@@ -94,6 +98,13 @@ const TaskLists = () => {
       return response.data;
     },
   });
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     refetch();
+  //   }, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, [refetch]);
 
   return (
     <div className="grid grid-cols-9 gap-4 my-12">
