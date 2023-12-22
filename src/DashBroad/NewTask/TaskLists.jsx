@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import usePublicApi from '../../Hooks/usePublicApi';
 import { useDrag, useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const CompletedProgress = () => {
   const publicApi = usePublicApi();
@@ -21,7 +22,7 @@ const CompletedProgress = () => {
       .catch((error) => console.log(error));
   };
 
-  const { data: completedData = [] } = useQuery({
+  const { data: completedData = [], refetch } = useQuery({
     queryKey: ['complete'],
     queryFn: async () => {
       const response = await publicApi.get('/completed');
@@ -31,12 +32,12 @@ const CompletedProgress = () => {
   });
 
   // TODO: I have to add here useEffect and retch when i am going to deploy
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     refetch();
-  //   }, 500);
-  //   return () => clearInterval(intervalId);
-  // }, [refetch]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 500);
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
   return (
     <div ref={drop} className={`min-h-screen ${isOver ? 'bg-green-200' : ''}`}>
@@ -78,7 +79,7 @@ const SectionProgress = () => {
       .catch((error) => console.log(error));
   };
 
-  const { data: ongoingData = [] } = useQuery({
+  const { data: ongoingData = [], refetch } = useQuery({
     queryKey: ['progress'],
     queryFn: async () => {
       const response = await publicApi.get('/ongoing');
@@ -88,12 +89,12 @@ const SectionProgress = () => {
   });
 
   // TODO: I have to add here useEffect and retch when i am going to deploy
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     refetch();
-  //   }, 500);
-  //   return () => clearInterval(intervalId);
-  // }, [refetch]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 500);
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
   return (
     <div ref={drop} className={`min-h-screen ${isOver ? 'bg-green-200' : ''}`}>
@@ -146,7 +147,7 @@ const DraggableTask = ({ taskItem }) => {
 const TaskLists = () => {
   const publicApi = usePublicApi();
 
-  const { data: taskData = [] } = useQuery({
+  const { data: taskData = [], refetch } = useQuery({
     queryKey: ['task'],
     queryFn: async () => {
       const response = await publicApi.get(`/created`);
@@ -155,12 +156,12 @@ const TaskLists = () => {
   });
 
   // TODO: I have to add here useEffect and retch when i am going to deploy
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     refetch();
-  //   }, 1000);
-  //   return () => clearInterval(intervalId);
-  // }, [refetch]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [refetch]);
 
   return (
     <div className="grid grid-cols-9 gap-4 my-12">
