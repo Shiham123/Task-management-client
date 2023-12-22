@@ -1,10 +1,25 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useAppContext from '../Hooks/useAppContext';
+import Swal from 'sweetalert2';
 
 const DashBroadLayout = () => {
-  const { user } = useAppContext();
+  const { user, logOut } = useAppContext();
+  const navigate = useNavigate();
   const loginUserName = user?.displayName;
   const photoUrl = user?.photoURL;
+
+  const handleLogout = () => {
+    logOut()
+      .then((result) => {
+        console.log(result);
+        Swal.fire({
+          icon: 'success',
+          text: 'Sign Out Successfully',
+        });
+        navigate('/');
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
@@ -28,8 +43,8 @@ const DashBroadLayout = () => {
                 to="/dashBroad/newTask"
                 className={({ isActive }) =>
                   isActive
-                    ? 'text-lightTwo bg-darkOne px-4 py-2 rounded-lg text-3xl font-semibold font-lora'
-                    : 'text-3xl text-lightThree font-semibold font-lora'
+                    ? 'text-lightTwo bg-darkOne px-4 py-2 rounded-lg text-xl font-semibold font-lora'
+                    : 'text-xl text-lightThree font-semibold font-lora'
                 }
               >
                 New Task
@@ -40,12 +55,32 @@ const DashBroadLayout = () => {
                 to="/dashBroad/editTask"
                 className={({ isActive }) =>
                   isActive
-                    ? 'text-lightTwo bg-darkOne px-4 py-2 rounded-lg text-3xl font-semibold font-lora'
-                    : 'text-3xl text-lightThree font-semibold font-lora'
+                    ? 'text-lightTwo bg-darkOne px-4 py-2 rounded-lg text-xl font-semibold font-lora'
+                    : 'text-xl text-lightThree font-semibold font-lora'
                 }
               >
                 Edit task
               </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashBroad/profile"
+                className={({ isActive }) =>
+                  isActive
+                    ? 'text-lightTwo bg-darkOne px-4 py-2 rounded-lg text-xl font-semibold font-lora'
+                    : 'text-xl text-lightThree font-semibold font-lora'
+                }
+              >
+                Profile Details
+              </NavLink>
+            </li>
+            <li>
+              <button
+                onClick={handleLogout}
+                className="text-lightTwo bg-darkOne px-4 py-2 rounded-lg text-xl font-semibold font-lora"
+              >
+                Log Out
+              </button>
             </li>
           </div>
         </ul>

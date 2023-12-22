@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
 import useAppContext from '../../Hooks/useAppContext';
 import swal from 'sweetalert';
+import usePublicApi from '../../Hooks/usePublicApi';
 
 const LoginPage = () => {
   const {
@@ -17,6 +18,7 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || '/';
+  const publicApi = usePublicApi();
 
   const onSubmit = (data) => {
     const { email, password } = data;
@@ -34,6 +36,18 @@ const LoginPage = () => {
     googleLogin()
       .then((result) => {
         console.log(result);
+        const { photoURL, email, displayName } = result.user;
+
+        const googleFormData = { photoURL, email, displayName };
+        publicApi
+          .post('/users', googleFormData)
+          .then((response) => {
+            console.log(response);
+            swal('login successfully', 'you logged in successfully', 'success');
+            navigate('/');
+          })
+          .catch((error) => console.log(error));
+
         navigate('/');
       })
       .catch((error) => console.log(error));
@@ -43,6 +57,18 @@ const LoginPage = () => {
     githubLogin()
       .then((response) => {
         console.log(response);
+
+        const { photoURL, email, displayName } = response.user;
+        const githubFormData = { photoURL, email, displayName };
+        publicApi
+          .post('/users', githubFormData)
+          .then((response) => {
+            console.log(response);
+            swal('login successfully', 'you logged in successfully', 'success');
+            navigate('/');
+          })
+          .catch((error) => console.log(error));
+
         navigate('/');
       })
       .catch((error) => console.log(error));

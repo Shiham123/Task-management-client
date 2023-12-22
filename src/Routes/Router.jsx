@@ -11,6 +11,7 @@ import DrawerLayout from '../MainLayout/DrawerLayout';
 import NewTask from '../DashBroad/NewTask/NewTask';
 import EditTask from '../DashBroad/EditTask/EditTask';
 import PrivateRoutes from './PrivateRoutes';
+import ProfileDetails from '../DashBroad/ProfileDetails.jsx/ProfileDetails';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
     children: [
       { path: 'newTask', element: <NewTask /> },
       { path: 'editTask', element: <EditTask /> },
+      { path: 'profile', element: <ProfileDetails /> },
     ],
   },
 ]);
