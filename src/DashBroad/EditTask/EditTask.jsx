@@ -53,7 +53,7 @@ const EditTask = () => {
           return (
             <div
               key={_id}
-              className="bg-lightTwo p-12 flex flex-col gap-8 rounded-lg"
+              className="bg-lightTwo p-12 flex flex-col gap-8 rounded-lg my-8"
             >
               <h1 className="text-3xl font-lora font-semibold">
                 Title : {title}
@@ -70,7 +70,11 @@ const EditTask = () => {
               <h1 className="text-3xl font-lora font-semibold">
                 Current status : {status}
               </h1>
-              <FaTrashAlt onClick={() => deleteTodo(_id)} size={50} />
+              <FaTrashAlt
+                onClick={() => deleteTodo(_id)}
+                size={50}
+                className="cursor-pointer"
+              />
             </div>
           );
         })}
