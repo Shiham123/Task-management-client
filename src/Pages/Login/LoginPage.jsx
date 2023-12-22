@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import SectionTitle from '../../SubComponent/SectionTitle';
 import { useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineGoogle } from 'react-icons/ai';
+import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
 import useAppContext from '../../Hooks/useAppContext';
 import swal from 'sweetalert';
 
@@ -13,7 +13,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const formRef = useRef(null);
-  const { loginUserWithEmail, googleLogin } = useAppContext();
+  const { loginUserWithEmail, googleLogin, githubLogin } = useAppContext();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || '/';
@@ -34,6 +34,15 @@ const LoginPage = () => {
     googleLogin()
       .then((result) => {
         console.log(result);
+        navigate('/');
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleGithubLogin = () => {
+    githubLogin()
+      .then((response) => {
+        console.log(response);
         navigate('/');
       })
       .catch((error) => console.log(error));
@@ -109,6 +118,12 @@ const LoginPage = () => {
               className="w-full bg-colorFive flex justify-center items-center p-4 rounded-lg cursor-pointer hover:bg-transparent  border-2 border-colorFive duration-300 gap-4"
             >
               <AiOutlineGoogle size={30} /> <span>Login with google</span>
+            </div>
+            <div
+              onClick={handleGithubLogin}
+              className="w-full bg-colorFive my-8 flex justify-center items-center p-4 rounded-lg cursor-pointer hover:bg-transparent  border-2 border-colorFive duration-300 gap-4"
+            >
+              <AiOutlineGithub size={30} /> <span>Login with github</span>
             </div>
           </div>
         </div>

@@ -1,6 +1,18 @@
+import { useQuery } from '@tanstack/react-query';
 import Marquee from 'react-fast-marquee';
+import usePublicApi from '../../Hooks/usePublicApi';
 
 const ClientSection = () => {
+  const publicApi = usePublicApi();
+  const { data: clientData = [] } = useQuery({
+    queryKey: 'client',
+    queryFn: async () => {
+      const response = await publicApi.get('/users');
+      console.log(response);
+      return response.data;
+    },
+  });
+
   return (
     <div>
       <div className="pb-5 m-12">
@@ -14,12 +26,16 @@ const ClientSection = () => {
         </div>
         <Marquee className="p-8 border-2 border-lightOne rounded-lg" speed={50}>
           <div className="flex gap-[10rem]">
-            <h1 className="text-3xl font-lora capitalize">Developers</h1>
-            <h1 className="text-3xl font-lora capitalize">Corporate</h1>
-            <h1 className="text-3xl font-lora capitalize">Professionals</h1>
-            <h1 className="text-3xl font-lora capitalize">bankers</h1>
-            <h1 className="text-3xl font-lora capitalize">Doctors</h1>
-            <h1 className="text-3xl font-lora capitalize">Engineer</h1>
+            {clientData.map((item) => {
+              const { occupation } = item;
+              return (
+                <div key={item.id}>
+                  <h1 className="text-3xl font-lora capitalize">
+                    {occupation}
+                  </h1>
+                </div>
+              );
+            })}
           </div>
         </Marquee>
         <hr className="w-[400px] mx-auto mt-20 border-2 border-lightTwo" />

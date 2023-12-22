@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SectionTitle from '../../SubComponent/SectionTitle';
 import useAppContext from '../../Hooks/useAppContext';
 import swal from 'sweetalert';
+import usePublicApi from '../../Hooks/usePublicApi';
 
 const RegisterPage = () => {
   const {
@@ -15,12 +16,23 @@ const RegisterPage = () => {
   const authentication = useAppContext();
   const { createUserWithEmail, profileUpdate, logOut } = authentication;
   const navigate = useNavigate();
+  const publicApi = usePublicApi();
 
   const onSubmit = (data) => {
-    const { username, url, password, email } = data;
+    const { username, url, password, email, occupation } = data;
     createUserWithEmail(email, password)
       .then((result) => {
         console.log(result);
+
+        const formData = {
+          username,
+          email,
+          occupation,
+        };
+        publicApi
+          .post('/users', formData)
+          .then((result) => console.log(result))
+          .catch((error) => console.log(error));
 
         profileUpdate(username, url)
           .then((result) => {
@@ -30,11 +42,7 @@ const RegisterPage = () => {
             logOut()
               .then((result) => {
                 console.log(result);
-                swal(
-                  'sign Up successfully',
-                  'created user successfully',
-                  'success'
-                );
+                swal('sign Up successfully', 'Please login', 'success');
                 navigate('/login');
               })
               .catch((error) => console.log(error));
@@ -126,6 +134,25 @@ const RegisterPage = () => {
               {errors.password && (
                 <span className="font-poppins p-2 text-sm text-red-600 font-light">
                   Password Field is required
+                </span>
+              )}
+            </div>
+            {/* occupation */}
+            <div className="form-control my-8">
+              <label className="label">
+                <span className="font-lora text-2xl uppercase font-semibold tracking-widest">
+                  Occupation
+                </span>
+              </label>
+              <input
+                type="text"
+                placeholder="type your occupation"
+                className="outline-none border-[2px] border-lightOne p-4 rounded-lg font-poppins text-2xl"
+                {...register('occupation', { required: true })}
+              />
+              {errors.occupation && (
+                <span className="font-poppins p-2 text-sm text-red-600 font-light">
+                  Occupation Field is required
                 </span>
               )}
             </div>
